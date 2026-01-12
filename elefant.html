@@ -183,10 +183,12 @@ function drawGrid() {
 }
 
 function drawObjects() {
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
   for (const o of objects) {
     if (!o.image.complete) continue;
-    const x = canvas.width / 2 + o.x + world.offsetX;
-    const y = canvas.height / 2 + o.y + world.offsetY;
+    const x = centerX + o.x + world.offsetX;
+    const y = centerY / 2 + o.y + world.offsetY;
     if (x + o.w < 0 || x - o.w > canvas.width || y + o.h < 0 || y - o.h > canvas.height) continue;
     ctx.drawImage(o.image, x - o.w / 2, y - o.h / 2, o.w, o.h);
   }
