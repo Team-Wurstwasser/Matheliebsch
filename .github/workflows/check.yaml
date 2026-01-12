@@ -1,0 +1,23 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  html-validation:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+
+    steps:
+    - name: Code Checkout
+      uses: actions/checkout@v4
+
+    - name: HTML Validator
+      uses: anishathalye/proof-html@v2
+      with:
+        directory: .
+        enforce_https: true
