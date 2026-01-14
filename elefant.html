@@ -73,21 +73,58 @@ function setDirectionFromInput(x, y) {
   isMoving = true;
 }
 
-canvas.addEventListener("click", e => {
-  if (!counterStarted) startCounter();
-  setDirectionFromInput(e.pageX, e.pageY);
-});
+const keys = { w: false, s: false, a: false, d: false, ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
 
-canvas.addEventListener("touchstart", e => {
-  if (!counterStarted) startCounter();
-  const t = e.touches[0];
-  e.preventDefault();
-  setDirectionFromInput(t.pageX, t.pageY);
-}, false);
+function setDirectionFromKeys() {
+  let dx = 0;
+  let dy = 0;
 
-canvas.addEventListener("touchmove", e => {
+  if (keys.w || keys.ArrowUp) dy -= 1;
+  if (keys.s || keys.ArrowDown) dy += 1;
+  if (keys.a || keys.ArrowLeft) dx -= 1;
+  if (keys.d || keys.ArrowRight) dx += 1;
+
+  if (dx !== 0 || dy !== 0) {
+    const angle = Math.atan2(dy, dx);
+    movementDirectionX = Math.cos(angle);
+    movementDirectionY = Math.sin(angle);
+    player.facing = movementDirectionX < 0 ? 1 : -1;
+    isMoving = true;
+  }
+}
+
+const handleTouch = e => {
+  if (!counterStarted) startCounter();
+  if (e.type === "click") {
+    setDirectionFromInput(e.pageX, e.pageY);
+  }
+  else {
+    const t = e.touches[0];
+    e.preventDefault();
+    setDirectionFromInput(t.pageX, t.pageY);
+  }
+};
+
+const handleKey = e => {
+  if (!counterStarted) startCounter();
   e.preventDefault();
-}, false);
+  const isDown = e.type === "keydown";
+  if (e.key in keys) {
+    keys[e.key] = isDown;
+  } else if (e.key.toLowerCase() in keys) {
+    keys[e.key.toLowerCase()] = isDown;
+  }
+  setDirectionFromKeys();
+};
+
+canvas.addEventListener("click", handleTouch);
+canvas.addEventListener("touchstart", handleTouch, { passive: false });
+canvas.addEventListener("touchmove", handleTouch, { passive: false });
+
+window.addEventListener("keydown", handleKey);
+window.addEventListener("keyup", handleKey);
+
+canvas.addEventListener("contextmenu", e => e.preventDefault());
 
 const objects = [];
 const WORLD_RANGE = 100000;
