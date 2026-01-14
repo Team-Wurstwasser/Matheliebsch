@@ -13,12 +13,8 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resize);
-resize();
+const tileCanvas = document.createElement('canvas');
+const tileCtx = tileCanvas.getContext('2d');
 
 const images = {
   elefant: new Image(),
@@ -46,7 +42,8 @@ const player = {
 const world = {
   offsetX: 0,
   offsetY: 0,
-  gridSize: 42
+  gridSize: 42,
+  tileSize: 840
 };
 
 let liebe = 42;
@@ -59,8 +56,35 @@ let counterStarted = false;
 let counterInterval;
 
 let darkBackground = false;
+
+function preRenderGrid() {
+  tileCanvas.width = world.tileSize;
+  tileCanvas.height = world.tileSize;
+
+  const s = world.gridSize;
+
+  for (let x = 0; x < world.tileSize / s; x++) {
+    for (let y = 0; y < world.tileSize / s; y++) {
+      const isSpecial = (Math.abs(x * 73856093 ^ y * 19349663) % 42 === 0);
+      if (isSpecial) {
+        tileCtx.fillStyle = darkBackground ? "#404040" : "#808080";
+        tileCtx.fillRect(x * s, y * s, s, s);
+      }
+    }
+  }
+}
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  preRenderGrid();
+}
+window.addEventListener("resize", resize);
+resize();
+
 setInterval(() => {
   darkBackground = !darkBackground;
+  preRenderGrid();
 }, 48000);
 
 function setDirectionFromInput(x, y) {
@@ -202,28 +226,29 @@ function checkCollisions() {
 }
 
 function drawGrid() {
-  const s = world.gridSize;
-  const sx = Math.floor((-world.offsetX - canvas.width / 2) / s) - 1;
-  const ex = Math.floor((-world.offsetX + canvas.width / 2) / s) + 1;
-  const sy = Math.floor((-world.offsetY - canvas.height / 2) / s) - 1;
-  const ey = Math.floor((-world.offsetY + canvas.height / 2) / s) + 1;
-  for (let x = sx; x <= ex; x++) {
-    for (let y = sy; y <= ey; y++) {
-      const px = canvas.width / 2 + x * s + world.offsetX;
-      const py = canvas.height / 2 + y * s + world.offsetY;
-      ctx.fillStyle = (Math.abs(x * 73856093 ^ y * 19349663) % 42 === 0)
-        ? (darkBackground ? "#404040" : "#808080")
-        : (darkBackground ? "#000000" : "#ffffff");
-      ctx.fillRect(px, py, s, s);
+  const s = world.tileSize;
+
+  const shiftX = (world.offsetX % s);
+  const shiftY = (world.offsetY % s);
+
+  const startX = Math.floor((canvas.width / 2 + shiftX) % s) - s;
+  const startY = Math.floor((canvas.height / 2 + shiftY) % s) - s;
+
+  for (let x = startX; x < canvas.width; x += s) {
+    for (let y = startY; y < canvas.height; y += s) {
+      ctx.drawImage(tileCanvas, x, y);
     }
   }
 }
 
 function drawObjects() {
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
   for (const o of objects) {
     if (!o.image.complete) continue;
-    const x = canvas.width / 2 + o.x + world.offsetX;
-    const y = canvas.height / 2 + o.y + world.offsetY;
+    const x = centerX + o.x + world.offsetX;
+    const y = centerY + o.y + world.offsetY;
+    if (x + o.w < 0 || x - o.w > canvas.width || y + o.h < 0 || y - o.h > canvas.height) continue;
     ctx.drawImage(o.image, x - o.w / 2, y - o.h / 2, o.w, o.h);
   }
 }
