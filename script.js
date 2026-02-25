@@ -53,8 +53,6 @@ const world = {offsetX:0, offsetY:0, gridSize:42};
 let isMoving=false, movementDirectionX=0, movementDirectionY=0;
 let counterInterval;
 
-setInterval(()=>{ gameState.backgroundBlack=!gameState.backgroundBlack; },42000);
-
 const objects=[];
 
 const itemConfig = {
@@ -161,7 +159,8 @@ canvas.addEventListener("touchstart",e=>{
     setDirectionFromInput(t.pageX,t.pageY);
 },false);
 
-canvas.addEventListener("touchmove",e=>e.preventDefault(),false);
+canvas.addEventListener("touchmove",e=>e.preventDefault());
+canvas.addEventListener("contextmenu", e => e.preventDefault());
 
 function update(delta){
     if(isMoving){
@@ -258,9 +257,13 @@ function startCounter(){
             player.size=100;
             clearInterval(counterInterval);
             alert("Zeit überlebt: "+gameState.counter+" Sekunden");
-            window.location.href="index.htm";
+            window.location.href="index.html";
         }
     },1000);
+    
+    setInterval(() => { 
+        gameState.backgroundBlack = !gameState.backgroundBlack; 
+    }, 42000);
 }
 
 function render(){

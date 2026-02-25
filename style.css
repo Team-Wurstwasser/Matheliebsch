@@ -1,126 +1,38 @@
-@font-face {
-  font-family: "Latin Modern Mono";
-  src: url("regular.woff") format("woff");
-  font-style: normal;
-}
-
-html, body {
-  font-family: "Latin Modern Mono", monospace;
-  height: 100%;
-  font-size: 1rem;
-}
-
 body {
-  min-height: 100vh;
   margin: 0;
   padding: 0;
-  text-align: left;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.header-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.logo-link {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  text-decoration: none;
+  gap: 15px;
+}
+
+.logo {
+  height: 60px;
+  width: auto;
+  filter: drop-shadow(0px 0px 2px white); 
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: 'Latin Modern Mono', monospace;
+  color: #000;
+  text-shadow: 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
 }
 
 canvas {
   display: block;
-}
-
-.logo {
-  position: fixed;
-  top: 2rem;
-  left: 2rem;
-  max-width: 210px;
-  height: auto;
-}
-
-.links {
-  position: fixed;
-  right: 2rem;
-  bottom: 2rem;
-  max-height: 85vh;
-  overflow-y: auto;
-  color: inherit;
-}
-
-.bibelvers {
-  position: fixed;
-  right: 2rem;
-  bottom: 2rem;
-  text-align: left;
-  color: inherit;
-}
-
-.links a, .todo {
-  display: block;
-  text-align: right;
-  text-decoration: none;
-  color: inherit;
-  margin-bottom: 10px;
-}
-
-.linkitem {
-  max-height: 1.42rem;
-  width: auto; 
-  vertical-align: middle; 
-}
-
-.links a:hover {
-  text-decoration: underline;
-}
-
-.todo {
-  text-decoration: line-through;
-  text-align: right;
-}
-
-.sprite-live {
-  position: fixed;
-  width: 100px;
-  user-select: none;
-  will-change: left, top, transform;
-  touch-action: none;
-  z-index: 1;
-}
-
-textarea {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  max-width: 1000px;
-  box-sizing: border-box;
-  height: auto;
-  padding: 21px 21px 21px 42px;
-  border: 2px solid #808080;
-  border-radius: 9999px;
-  font-size: inherit;
-  font-family: "Latin Modern Mono", monospace;
-  resize: none;
-  outline: none;
-  color: #000;
-}
-
-textarea::placeholder {
-  color: #000;
-}
-
-textarea:focus {
-  border-color: #000;
-}
-
-textarea:focus::placeholder {
-  color: transparent;
-}
-
-#dynamicText {
-  font-size: inherit;
-  color: inherit;
-  padding: 21px;
-  text-align: center;
-  margin-bottom: 21px;
-  position: fixed;
-  top: 25%;
-  left: 50%;
-  transform: translateX(-50%);
 }
