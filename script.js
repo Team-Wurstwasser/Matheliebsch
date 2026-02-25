@@ -30,13 +30,13 @@ function clampStatus(){
 }
 
 const imageSources = {
-    mnf:"png/Mitternachtsformel.png",
-    elefant:"png/Elefant.png",
-    cookie:"png/Cookie.png",
-    schnecke:"png/Schnecke.png",
-    huhn:"png/Huhn.png",
-    traube:"png/Traube.png",
-    kuh:"png/Kuh.png"
+    mnf:"img/Mitternachtsformel.png",
+    elefant:"img/Elefant.png",
+    cookie:"img/Cookie.png",
+    schnecke:"img/Schnecke.png",
+    huhn:"img/Huhn.png",
+    traube:"img/Traube.png",
+    kuh:"img/Kuh.png"
 };
 
 const images = Object.fromEntries(
@@ -260,7 +260,7 @@ function startCounter(){
             window.location.href="index.html";
         }
     },1000);
-    
+
     setInterval(() => { 
         gameState.backgroundBlack = !gameState.backgroundBlack; 
     }, 42000);
