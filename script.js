@@ -1,4 +1,3 @@
-
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
@@ -231,14 +230,10 @@ function drawPlayerLives(){
     ctx.save();
     ctx.font = "1rem 'Latin Modern Mono', monospace";
     ctx.fillStyle = "#000";
-	
-	
+
 	ctx.fillText(gameState.LIEBE.toFixed(0), centerX-9+19*player.facing, centerY-28);
-	
 	ctx.fillText(gameState.LEBEN.toFixed(0), centerX-8-5*player.facing, centerY+42);
-	
-	
-	
+    	
     ctx.restore();
 }
 
